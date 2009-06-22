@@ -23,24 +23,6 @@ class TimeKeeper
   attr_reader :record
 end
 
-def parse src
-  src.split "\n"
-end
-
-def ftime_format ftime
-  int = ftime.truncate
-  sec = int % 60
-  min = ((int - sec) / 60) % 60
-  hr = (int - min * 60 - sec) / 3600
-  format "%02d:%02d:%02d", hr, min, sec
-end
-
-def printrecord rec
-  checkpoint = rec[0]
-  time = ftime_format rec[1]
-  "#{checkpoint}\t#{time}"
-end
-    
 class Controller
   def initialize
     @keeper = TimeKeeper.new parse ARGF.read
@@ -67,6 +49,24 @@ class Controller
     output
   end
 
+  def parse src
+    src.split "\n"
+  end
+
+  def ftime_format ftime
+    int = ftime.truncate
+    sec = int % 60
+    min = ((int - sec) / 60) % 60
+    hr = (int - min * 60 - sec) / 3600
+    format "%02d:%02d:%02d", hr, min, sec
+  end
+
+  def printrecord rec
+    checkpoint = rec[0]
+    time = ftime_format rec[1]
+    "#{checkpoint}\t#{time}"
+  end
+    
   def outfilename
     ARGF.filename + '.out'
   end
